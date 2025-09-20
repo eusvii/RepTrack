@@ -1,3 +1,4 @@
+import { CardType } from "@/app";
 import ExerciseDropDown from "@/components/ExerciseDropDown";
 import { Button, ButtonIcon } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,11 +9,12 @@ import {
 } from "@/components/ui/checkbox";
 import { CheckIcon, TrashIcon } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 
 type ExerciseCardProps = {
   id: number;
+  initialData?: CardType;
   onRemove: (id: number) => void;
   onConfirm: (
     id: number,
@@ -25,18 +27,34 @@ type ExerciseCardProps = {
   ) => void;
 };
 
-const ExerciseCard = ({ id, onRemove, onConfirm }: ExerciseCardProps) => {
-  const [setsValue, setSetsValue] = useState("");
-  const [repsValue, setRepsValue] = useState("");
-  const [isWarmUpSet, setIsWarmUpSet] = useState(false);
-  const [exerciseName, setExerciseName] = useState("");
+const ExerciseCard = ({
+  id,
+  onRemove,
+  initialData,
+  onConfirm
+}: ExerciseCardProps) => {
+  const [exerciseName, setExerciseName] = useState(
+    initialData?.exerciseName || ""
+  );
+  const [sets, setSets] = useState(initialData?.sets || "");
+  const [reps, setReps] = useState(initialData?.reps || "");
+  const [isWarmUp, setIsWarmUp] = useState(initialData?.isWarmUp || false);
+
+  useEffect(() => {
+    if (initialData) {
+      setExerciseName(initialData.exerciseName || "");
+      setSets(initialData.sets || "");
+      setReps(initialData.reps || "");
+      setIsWarmUp(initialData.isWarmUp || false);
+    }
+  }, [initialData]);
 
   const confirmCard = () => {
     const data = {
       exerciseName: exerciseName,
-      sets: setsValue,
-      reps: repsValue,
-      isWarmUp: isWarmUpSet
+      sets: sets,
+      reps: reps,
+      isWarmUp: isWarmUp
     };
     onConfirm(id, data);
   };
@@ -47,7 +65,10 @@ const ExerciseCard = ({ id, onRemove, onConfirm }: ExerciseCardProps) => {
       className="mt-5 h-2/5 w-11/12 flex-1 items-center rounded-lg"
     >
       <View className="m-3 w-full">
-        <ExerciseDropDown onValueChange={setExerciseName} />
+        <ExerciseDropDown
+          onValueChange={setExerciseName}
+          value={exerciseName}
+        />
         <View className="mt-5 flex-row justify-between">
           <View className="w-1/4 items-center">
             <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 14 }}>
@@ -59,8 +80,8 @@ const ExerciseCard = ({ id, onRemove, onConfirm }: ExerciseCardProps) => {
               size="lg"
               value="Warm Up Sets"
               className="mt-6"
-              isChecked={isWarmUpSet}
-              onChange={setIsWarmUpSet}
+              isChecked={isWarmUp}
+              onChange={setIsWarmUp}
             >
               <CheckboxIndicator>
                 <CheckboxIcon as={CheckIcon} />
@@ -81,8 +102,8 @@ const ExerciseCard = ({ id, onRemove, onConfirm }: ExerciseCardProps) => {
             >
               <InputField
                 placeholder="0"
-                onChangeText={text => setSetsValue(text)}
-                value={setsValue}
+                onChangeText={text => setSets(text)}
+                value={sets}
                 inputMode="numeric"
               />
             </Input>
@@ -101,8 +122,8 @@ const ExerciseCard = ({ id, onRemove, onConfirm }: ExerciseCardProps) => {
             >
               <InputField
                 placeholder="0"
-                onChangeText={text => setRepsValue(text)}
-                value={repsValue}
+                onChangeText={text => setReps(text)}
+                value={reps}
                 inputMode="numeric"
               />
             </Input>

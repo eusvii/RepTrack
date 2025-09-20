@@ -7,15 +7,15 @@ const ITEM_HEIGHT = 50;
 
 interface DropdownItem {
   label: string;
-  value: string | number;
+  value?: string | null;
 }
 
 type ExerciseDropDownProps = {
   onValueChange: (value: string) => void;
+  value?: string | null;
 };
 
-const ExerciseDropDown = ({ onValueChange }: ExerciseDropDownProps) => {
-  const [value, setValue] = useState(null);
+const ExerciseDropDown = ({ onValueChange, value }: ExerciseDropDownProps) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const getItemLayout = (
@@ -36,6 +36,10 @@ const ExerciseDropDown = ({ onValueChange }: ExerciseDropDownProps) => {
     return formattedData.sort((a, b) => a.label.localeCompare(b.label));
   }, []);
 
+  const selectedItem = useMemo(() => {
+    return sortedData.find(item => item.label === value);
+  }, [value, sortedData]);
+
   return (
     <Dropdown
       style={[
@@ -55,11 +59,10 @@ const ExerciseDropDown = ({ onValueChange }: ExerciseDropDownProps) => {
       placeholder="Select exercise"
       searchPlaceholder="Search exercise..."
       fontFamily="Roboto_400Regular"
-      value={value}
+      value={selectedItem?.value}
       onFocus={() => setIsFocus(true)}
       onBlur={() => setIsFocus(false)}
       onChange={exercise => {
-        setValue(exercise.value);
         setIsFocus(false);
         onValueChange(exercise.label);
       }}

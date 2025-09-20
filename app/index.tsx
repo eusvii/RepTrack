@@ -5,7 +5,7 @@ import { AddIcon, EditIcon, TrashIcon } from "@/components/ui/icon";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 
-type CardType = {
+export type CardType = {
   id: number;
   isConfirmed: boolean;
   exerciseName?: string;
@@ -17,9 +17,10 @@ type CardType = {
 type ConfirmedCardProps = {
   cardData: CardType;
   onRemove: (id: number) => void;
+  onEdit: (id: number) => void;
 };
 
-const ConfirmedCard = ({ cardData, onRemove }: ConfirmedCardProps) => (
+const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
   <Card variant="filled" className="mt-5 w-11/12 items-center rounded-lg p-3">
     <View className="flex-row items-center mt-5">
       <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 16 }}>
@@ -61,7 +62,11 @@ const ConfirmedCard = ({ cardData, onRemove }: ConfirmedCardProps) => (
       >
         <ButtonIcon as={TrashIcon} className="h-7 w-7" />
       </Button>
-      <Button variant="solid" className="h-12 w-1/4 bg-[#555555]">
+      <Button
+        onPress={() => onEdit(cardData.id)}
+        variant="solid"
+        className="h-12 w-1/4 bg-[#555555]"
+      >
         <ButtonIcon as={EditIcon} className="h-7 w-7" />
       </Button>
     </View>
@@ -100,6 +105,14 @@ export default () => {
     );
   };
 
+  const handleEditCard = (idToEdit: number) => {
+    setCards(currentCards =>
+      currentCards.map(card =>
+        card.id === idToEdit ? { ...card, isConfirmed: false } : card
+      )
+    );
+  };
+
   return (
     <View className="flex-1 bg-white">
       <ScrollView
@@ -113,10 +126,12 @@ export default () => {
               key={card.id}
               cardData={card}
               onRemove={handleRemoveCard}
+              onEdit={handleEditCard}
             />
           ) : (
             <ExerciseCard
               key={card.id}
+              initialData={card}
               id={card.id}
               onRemove={handleRemoveCard}
               onConfirm={handleConfirmCard}
