@@ -2,8 +2,9 @@ import ExerciseCard from "@/components/ExerciseCard";
 import { Button, ButtonIcon } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AddIcon, EditIcon, TrashIcon } from "@/components/ui/icon";
-import { useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 
 export type CardType = {
   id: number;
@@ -74,9 +75,45 @@ const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
 );
 
 export default () => {
-  const [cards, setCards] = useState<CardType[]>([
-    { id: 1, isConfirmed: false }
-  ]);
+  const [cards, setCards] = useState<CardType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const STORAGE_KEY = "@workout_cards";
+
+  useEffect(() => {
+    const loadCards = async () => {
+      try {
+        const storedCards = await AsyncStorage.getItem(STORAGE_KEY);
+        if (storedCards !== null) {
+          setCards(JSON.parse(storedCards));
+        } else {
+          setCards([{ id: 1, isConfirmed: false }]);
+        }
+      } catch (e) {
+        console.error("Failed to load cards.", e);
+        setCards([{ id: 1, isConfirmed: false }]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadCards();
+  }, []);
+
+  useEffect(() => {
+    const saveCards = async () => {
+      if (!isLoading) {
+        try {
+          const jsonValue = JSON.stringify(cards);
+          await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
+        } catch (e) {
+          console.error("Failed to save cards.", e);
+        }
+      }
+    };
+
+    saveCards();
+  }, [cards, isLoading]);
 
   const handleAddCard = () => {
     const newCard: CardType = { id: new Date().getTime(), isConfirmed: false };
@@ -112,6 +149,14 @@ export default () => {
       )
     );
   };
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-white">
+        <ActivityIndicator size="large" color="#555555" />
+      </View>
+    );
+  }
 
   return (
     <View className="flex-1 bg-white">
