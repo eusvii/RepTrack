@@ -1,5 +1,4 @@
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
-import { Spinner } from "@/components/ui/spinner";
 import {
   Roboto_400Regular,
   Roboto_600SemiBold,
@@ -8,30 +7,25 @@ import {
 } from "@expo-google-fonts/roboto";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
-import { View } from "react-native";
 import "./global.css";
 
 SplashScreen.preventAutoHideAsync();
 
 export default () => {
-  const [fontloaded, fonterror] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     Roboto_400Regular,
     Roboto_600SemiBold,
     Roboto_700Bold
   });
 
   useEffect(() => {
-    if (fontloaded || fonterror) {
+    if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
     }
-  }, [fontloaded, fonterror]);
+  }, [fontsLoaded, fontError]);
 
-  if (!fontloaded && !fonterror) {
-    return (
-      <View className="flex-1 bg-white items-center justify-center">
-        <Spinner size="large" color="#3b3b3b" />
-      </View>
-    );
+  if (!fontsLoaded && !fontError) {
+    return null;
   }
 
   return (
