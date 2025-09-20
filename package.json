@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.4.1",
-    "@expo/html-elements": "^0.10.1",
+    "@expo/html-elements": "^0.12.5",
     "@expo/metro-runtime": "~6.1.2",
     "@gluestack-ui/core": "^3.0.0",
     "@gluestack-ui/utils": "^3.0.0",
@@ -23,6 +23,7 @@
     "expo-router": "~6.0.7",
     "expo-splash-screen": "~31.0.10",
     "expo-status-bar": "~3.0.8",
+    "lucide-react-native": "^0.510.0",
     "nativewind": "^4.1.23",
     "react": "19.1.0",
     "react-aria": "^3.33.0",
@@ -40,9 +41,9 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
-    "prettier": "3.6.2",
-    "prettier-plugin-organize-imports": "^4.2.0",
-    "prettier-plugin-tailwindcss": "^0.5.11",
+    "prettier": "^3.6.2",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.9.2"
   },

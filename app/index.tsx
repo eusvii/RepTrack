@@ -1,78 +1,138 @@
-import { useMemo, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
-import exercisesData from "../data/exercises.json";
+import ExerciseCard from "@/components/ExerciseCard";
+import { Button, ButtonIcon } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { AddIcon, EditIcon, TrashIcon } from "@/components/ui/icon";
+import { useState } from "react";
+import { ScrollView, Text, View } from "react-native";
+
+type CardType = {
+  id: number;
+  isConfirmed: boolean;
+  exerciseName?: string;
+  sets?: string;
+  reps?: string;
+  isWarmUp?: boolean;
+};
+
+type ConfirmedCardProps = {
+  cardData: CardType;
+  onRemove: (id: number) => void;
+};
+
+const ConfirmedCard = ({ cardData, onRemove }: ConfirmedCardProps) => (
+  <Card variant="filled" className="mt-5 w-11/12 items-center rounded-lg p-3">
+    <View className="flex-row items-center mt-5">
+      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 16 }}>
+        Exercise:{" "}
+      </Text>
+      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 16 }}>
+        {cardData.exerciseName}
+      </Text>
+    </View>
+    <View className="flex-row items-center">
+      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 16 }}>
+        Warm Up Set:{" "}
+      </Text>
+      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 16 }}>
+        {cardData.isWarmUp ? "Yes" : "No"}
+      </Text>
+    </View>
+    <View className="flex-row items-center">
+      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 16 }}>
+        Working Sets:{" "}
+      </Text>
+      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 16 }}>
+        {cardData.sets}
+      </Text>
+    </View>
+    <View className="flex-row items-center">
+      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 16 }}>
+        Reps:{" "}
+      </Text>
+      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 16 }}>
+        {cardData.reps}
+      </Text>
+    </View>
+    <View className="flex-row justify-center my-10">
+      <Button
+        onPress={() => onRemove(cardData.id)}
+        variant="solid"
+        className="h-12 w-1/4 bg-[#555555] mr-20"
+      >
+        <ButtonIcon as={TrashIcon} className="h-7 w-7" />
+      </Button>
+      <Button variant="solid" className="h-12 w-1/4 bg-[#555555]">
+        <ButtonIcon as={EditIcon} className="h-7 w-7" />
+      </Button>
+    </View>
+  </Card>
+);
 
 export default () => {
-  const [value, setValue] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
+  const [cards, setCards] = useState<CardType[]>([
+    { id: 1, isConfirmed: false }
+  ]);
 
-  const sortedData = useMemo(() => {
-    const formattedData = exercisesData.exercises.map(exercise => ({
-      label: exercise.name,
-      value: exercise.id
-    }));
+  const handleAddCard = () => {
+    const newCard: CardType = { id: new Date().getTime(), isConfirmed: false };
+    setCards(currentCards => [...currentCards, newCard]);
+  };
 
-    return formattedData.sort((a, b) => a.label.localeCompare(b.label));
-  }, []);
+  const handleRemoveCard = (idToRemove: number) => {
+    setCards(currentCards =>
+      currentCards.filter(card => card.id !== idToRemove)
+    );
+  };
+
+  const handleConfirmCard = (
+    idToConfirm: number,
+    data: {
+      exerciseName: string;
+      sets: string;
+      reps: string;
+      isWarmUp: boolean;
+    }
+  ) => {
+    setCards(currentCards =>
+      currentCards.map(card =>
+        card.id === idToConfirm ? { ...card, ...data, isConfirmed: true } : card
+      )
+    );
+  };
 
   return (
     <View className="flex-1 bg-white">
-      <View className="w-11/12 m-5">
-        <Dropdown
-          style={[
-            styles.dropdown,
-            isFocus && { borderColor: "#3b3b3b", borderWidth: 2 }
-          ]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          iconStyle={styles.iconStyle}
-          data={sortedData}
-          search={true}
-          dropdownPosition="bottom"
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder="Select exercise"
-          searchPlaceholder="Search exercise..."
-          fontFamily="Roboto_400Regular"
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={exercise => {
-            setValue(exercise.value);
-            setIsFocus(false);
-          }}
-          autoScroll={false}
-        />
+      <ScrollView
+        className="flex-1"
+        contentContainerStyle={{ alignItems: "center", paddingBottom: 120 }}
+        keyboardDismissMode="on-drag"
+      >
+        {cards.map(card =>
+          card.isConfirmed ? (
+            <ConfirmedCard
+              key={card.id}
+              cardData={card}
+              onRemove={handleRemoveCard}
+            />
+          ) : (
+            <ExerciseCard
+              key={card.id}
+              id={card.id}
+              onRemove={handleRemoveCard}
+              onConfirm={handleConfirmCard}
+            />
+          )
+        )}
+      </ScrollView>
+      <View className="absolute bottom-5 right-5">
+        <Button
+          variant="solid"
+          className="mb-10 h-20 w-20 rounded-full bg-[#555555]"
+          onPress={handleAddCard}
+        >
+          <ButtonIcon as={AddIcon} className="h-10 w-10" />
+        </Button>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  dropdown: {
-    height: 50,
-    borderColor: "gray",
-    borderWidth: 0.5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    width: "100%"
-  },
-  iconStyle: {
-    width: 20,
-    height: 20
-  },
-  placeholderStyle: {
-    fontSize: 16
-  },
-  selectedTextStyle: {
-    fontSize: 16
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-    width: "97%"
-  }
-});
