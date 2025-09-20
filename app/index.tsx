@@ -10,9 +10,9 @@ export type CardType = {
   id: number;
   isConfirmed: boolean;
   exerciseName?: string;
+  startingWeight?: string;
   sets?: string;
   reps?: string;
-  isWarmUp?: boolean;
 };
 
 type ConfirmedCardProps = {
@@ -22,40 +22,43 @@ type ConfirmedCardProps = {
 };
 
 const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
-  <Card variant="filled" className="mt-5 w-11/12 items-center rounded-lg p-3">
-    <View className="flex-row items-center mt-5">
-      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 16 }}>
-        Exercise:{" "}
-      </Text>
-      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 16 }}>
-        {cardData.exerciseName}
-      </Text>
+  <Card variant="filled" className="mt-5 w-11/12 rounded-lg">
+    <View className="m-5">
+      <View className="flex-row">
+        <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
+          Exercise:{" "}
+        </Text>
+        <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
+          {cardData.exerciseName}
+        </Text>
+      </View>
+      <View className="flex-row mt-1">
+        <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
+          Starting Weight:{" "}
+        </Text>
+        <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
+          {cardData.startingWeight}
+          {"kg"}
+        </Text>
+      </View>
+      <View className="flex-row mt-1">
+        <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
+          Sets:{" "}
+        </Text>
+        <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
+          {cardData.sets}
+        </Text>
+      </View>
+      <View className="flex-row mt-1">
+        <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
+          Reps:{" "}
+        </Text>
+        <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
+          {cardData.reps}
+        </Text>
+      </View>
     </View>
-    <View className="flex-row items-center">
-      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 16 }}>
-        Warm Up Set:{" "}
-      </Text>
-      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 16 }}>
-        {cardData.isWarmUp ? "Yes" : "No"}
-      </Text>
-    </View>
-    <View className="flex-row items-center">
-      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 16 }}>
-        Working Sets:{" "}
-      </Text>
-      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 16 }}>
-        {cardData.sets}
-      </Text>
-    </View>
-    <View className="flex-row items-center">
-      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 16 }}>
-        Reps:{" "}
-      </Text>
-      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 16 }}>
-        {cardData.reps}
-      </Text>
-    </View>
-    <View className="flex-row justify-center my-10">
+    <View className="flex-row justify-center my-3">
       <Button
         onPress={() => onRemove(cardData.id)}
         variant="solid"
@@ -130,9 +133,9 @@ export default () => {
     idToConfirm: number,
     data: {
       exerciseName: string;
+      startingWeight: string;
       sets: string;
       reps: string;
-      isWarmUp: boolean;
     }
   ) => {
     setCards(currentCards =>

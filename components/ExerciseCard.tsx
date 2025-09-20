@@ -2,11 +2,6 @@ import { CardType } from "@/app";
 import ExerciseDropDown from "@/components/ExerciseDropDown";
 import { Button, ButtonIcon } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  Checkbox,
-  CheckboxIcon,
-  CheckboxIndicator
-} from "@/components/ui/checkbox";
 import { CheckIcon, TrashIcon } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
 import { useEffect, useState } from "react";
@@ -20,9 +15,9 @@ type ExerciseCardProps = {
     id: number,
     data: {
       exerciseName: string;
+      startingWeight: string;
       sets: string;
       reps: string;
-      isWarmUp: boolean;
     }
   ) => void;
 };
@@ -36,25 +31,27 @@ const ExerciseCard = ({
   const [exerciseName, setExerciseName] = useState(
     initialData?.exerciseName || ""
   );
+  const [startingWeight, setStartingWeight] = useState(
+    initialData?.startingWeight || ""
+  );
   const [sets, setSets] = useState(initialData?.sets || "");
   const [reps, setReps] = useState(initialData?.reps || "");
-  const [isWarmUp, setIsWarmUp] = useState(initialData?.isWarmUp || false);
 
   useEffect(() => {
     if (initialData) {
       setExerciseName(initialData.exerciseName || "");
+      setStartingWeight(initialData.startingWeight || "");
       setSets(initialData.sets || "");
       setReps(initialData.reps || "");
-      setIsWarmUp(initialData.isWarmUp || false);
     }
   }, [initialData]);
 
   const confirmCard = () => {
     const data = {
       exerciseName: exerciseName,
+      startingWeight: startingWeight,
       sets: sets,
-      reps: reps,
-      isWarmUp: isWarmUp
+      reps: reps
     };
     onConfirm(id, data);
   };
@@ -70,27 +67,9 @@ const ExerciseCard = ({
           value={exerciseName}
         />
         <View className="mt-5 flex-row justify-between">
-          <View className="w-1/4 items-center">
+          <View className="w-1/4">
             <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 14 }}>
-              Warm Up Set
-            </Text>
-            <Checkbox
-              isDisabled={false}
-              isInvalid={false}
-              size="lg"
-              value="Warm Up Sets"
-              className="mt-6"
-              isChecked={isWarmUp}
-              onChange={setIsWarmUp}
-            >
-              <CheckboxIndicator>
-                <CheckboxIcon as={CheckIcon} />
-              </CheckboxIndicator>
-            </Checkbox>
-          </View>
-          <View className="w-1/4 items-center">
-            <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 14 }}>
-              Working Sets
+              Starting Weight (kg)
             </Text>
             <Input
               variant="outline"
@@ -102,13 +81,33 @@ const ExerciseCard = ({
             >
               <InputField
                 placeholder="0"
+                onChangeText={text => setStartingWeight(text)}
+                value={startingWeight}
+                inputMode="numeric"
+              />
+            </Input>
+          </View>
+          <View className="w-1/4">
+            <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 14 }}>
+              Working Sets
+            </Text>
+            <Input
+              variant="outline"
+              size="xl"
+              isDisabled={false}
+              isInvalid={false}
+              isReadOnly={false}
+              className="mt-7 rounded-lg border-[#ddd]"
+            >
+              <InputField
+                placeholder="0"
                 onChangeText={text => setSets(text)}
                 value={sets}
                 inputMode="numeric"
               />
             </Input>
           </View>
-          <View className="w-1/4 items-center">
+          <View className="w-1/4">
             <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 14 }}>
               Reps
             </Text>
@@ -118,7 +117,7 @@ const ExerciseCard = ({
               isDisabled={false}
               isInvalid={false}
               isReadOnly={false}
-              className="mt-3 rounded-lg border-[#ddd]"
+              className="mt-7 rounded-lg border-[#ddd]"
             >
               <InputField
                 placeholder="0"

@@ -34,8 +34,8 @@ export default () => {
         <Stack.Screen
           name="index"
           options={{
-            headerTitle: "Workout Tracker",
-            headerTitleStyle: { fontFamily: "Roboto_600SemiBold" }
+            headerTitle: "Workout Log",
+            headerTitleStyle: { fontFamily: "Roboto_600SemiBold", fontSize: 18 }
           }}
         />
       </Stack>
