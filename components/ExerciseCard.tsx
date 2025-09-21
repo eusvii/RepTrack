@@ -129,7 +129,7 @@ const ExerciseCard = ({
           <Button
             variant="solid"
             action="primary"
-            className="h-12 w-1/4 mr-20 bg-[#555555]"
+            className="mr-20 h-12 w-1/4 bg-[#555555]"
             onPress={() => onRemove(id)}
           >
             <ButtonIcon as={TrashIcon} className="h-7 w-7" />

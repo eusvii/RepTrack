@@ -32,7 +32,7 @@ const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
           {cardData.exerciseName}
         </Text>
       </View>
-      <View className="flex-row mt-1">
+      <View className="mt-1 flex-row">
         <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
           Starting Weight:{" "}
         </Text>
@@ -41,7 +41,7 @@ const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
           {"kg"}
         </Text>
       </View>
-      <View className="flex-row mt-1">
+      <View className="mt-1 flex-row">
         <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
           Sets:{" "}
         </Text>
@@ -49,7 +49,7 @@ const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
           {cardData.sets}
         </Text>
       </View>
-      <View className="flex-row mt-1">
+      <View className="mt-1 flex-row">
         <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
           Reps:{" "}
         </Text>
@@ -58,11 +58,11 @@ const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
         </Text>
       </View>
     </View>
-    <View className="flex-row justify-center my-3">
+    <View className="my-3 flex-row justify-center">
       <Button
         onPress={() => onRemove(cardData.id)}
         variant="solid"
-        className="h-12 w-1/4 bg-[#555555] mr-20"
+        className="mr-20 h-12 w-1/4 bg-[#555555]"
       >
         <ButtonIcon as={TrashIcon} className="h-7 w-7" />
       </Button>
@@ -158,7 +158,7 @@ export default () => {
 
   if (isLoading) {
     return (
-      <View className="flex-1 justify-center items-center bg-white">
+      <View className="flex-1 items-center justify-center bg-white">
         <ActivityIndicator size="large" color="#555555" />
       </View>
     );
@@ -167,7 +167,7 @@ export default () => {
   return (
     <View className="flex-1 bg-white">
       {cards.length === 0 ? (
-        <View className="flex-1 items-center justify-center s">
+        <View className="s flex-1 items-center justify-center">
           <Text
             style={{
               fontFamily: "Roboto_400Regular",
