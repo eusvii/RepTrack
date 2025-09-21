@@ -37,7 +37,7 @@ export default () => {
             headerTitle: "Workout Log",
             headerTitleStyle: {
               fontFamily: "Roboto_600SemiBold",
-              fontSize: 22,
+              fontSize: 20,
               color: "#555555"
             }
           }}

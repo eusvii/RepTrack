@@ -4,7 +4,14 @@ import { Card } from "@/components/ui/card";
 import { AddIcon, EditIcon, TrashIcon } from "@/components/ui/icon";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  View
+} from "react-native";
 
 export interface CardInterface {
   id: number;
@@ -179,30 +186,35 @@ export default () => {
           </Text>
         </View>
       ) : (
-        <ScrollView
+        <KeyboardAvoidingView
           className="flex-1"
-          contentContainerStyle={{ alignItems: "center", paddingBottom: 120 }}
-          keyboardDismissMode="on-drag"
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          keyboardVerticalOffset={100}
         >
-          {cards.map(card =>
-            card.isConfirmed ? (
-              <ConfirmedCard
-                key={card.id}
-                cardData={card}
-                onRemove={handleRemoveCard}
-                onEdit={handleEditCard}
-              />
-            ) : (
-              <ExerciseCard
-                key={card.id}
-                initialData={card}
-                id={card.id}
-                onRemove={handleRemoveCard}
-                onConfirm={handleConfirmCard}
-              />
-            )
-          )}
-        </ScrollView>
+          <ScrollView
+            contentContainerStyle={{ alignItems: "center", paddingBottom: 120 }}
+            keyboardDismissMode="on-drag"
+          >
+            {cards.map(card =>
+              card.isConfirmed ? (
+                <ConfirmedCard
+                  key={card.id}
+                  cardData={card}
+                  onRemove={handleRemoveCard}
+                  onEdit={handleEditCard}
+                />
+              ) : (
+                <ExerciseCard
+                  key={card.id}
+                  initialData={card}
+                  id={card.id}
+                  onRemove={handleRemoveCard}
+                  onConfirm={handleConfirmCard}
+                />
+              )
+            )}
+          </ScrollView>
+        </KeyboardAvoidingView>
       )}
       <View className="absolute bottom-5 right-5">
         <Button
