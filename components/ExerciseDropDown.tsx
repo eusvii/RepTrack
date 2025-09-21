@@ -7,15 +7,15 @@ const ITEM_HEIGHT = 50;
 
 interface DropdownItem {
   label: string;
-  value?: string | null;
+  value: number;
 }
 
-type ExerciseDropDownProps = {
+interface ExerciseDropDownProps {
   onValueChange: (value: string) => void;
-  value?: string | null;
-};
+  name?: string | null;
+}
 
-const ExerciseDropDown = ({ onValueChange, value }: ExerciseDropDownProps) => {
+const ExerciseDropDown = ({ onValueChange, name }: ExerciseDropDownProps) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const getItemLayout = (
@@ -37,8 +37,8 @@ const ExerciseDropDown = ({ onValueChange, value }: ExerciseDropDownProps) => {
   }, []);
 
   const selectedItem = useMemo(() => {
-    return sortedData.find(item => item.label === value);
-  }, [value, sortedData]);
+    return sortedData.find(item => item.label === name);
+  }, [name, sortedData]);
 
   return (
     <Dropdown

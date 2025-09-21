@@ -6,20 +6,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 
-export type CardType = {
+export interface CardInterface {
   id: number;
   isConfirmed: boolean;
   exerciseName?: string;
   startingWeight?: string;
   sets?: string;
   reps?: string;
-};
+}
 
-type ConfirmedCardProps = {
-  cardData: CardType;
+interface ConfirmedCardProps {
+  cardData: CardInterface;
   onRemove: (id: number) => void;
   onEdit: (id: number) => void;
-};
+}
 
 const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
   <Card variant="filled" className="mt-5 w-11/12 rounded-lg">
@@ -78,7 +78,7 @@ const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
 );
 
 export default () => {
-  const [cards, setCards] = useState<CardType[]>([]);
+  const [cards, setCards] = useState<CardInterface[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const STORAGE_KEY = "@workout_cards";
@@ -119,7 +119,10 @@ export default () => {
   }, [cards, isLoading]);
 
   const handleAddCard = () => {
-    const newCard: CardType = { id: new Date().getTime(), isConfirmed: false };
+    const newCard: CardInterface = {
+      id: new Date().getTime(),
+      isConfirmed: false
+    };
     setCards(currentCards => [...currentCards, newCard]);
   };
 
@@ -163,30 +166,44 @@ export default () => {
 
   return (
     <View className="flex-1 bg-white">
-      <ScrollView
-        className="flex-1"
-        contentContainerStyle={{ alignItems: "center", paddingBottom: 120 }}
-        keyboardDismissMode="on-drag"
-      >
-        {cards.map(card =>
-          card.isConfirmed ? (
-            <ConfirmedCard
-              key={card.id}
-              cardData={card}
-              onRemove={handleRemoveCard}
-              onEdit={handleEditCard}
-            />
-          ) : (
-            <ExerciseCard
-              key={card.id}
-              initialData={card}
-              id={card.id}
-              onRemove={handleRemoveCard}
-              onConfirm={handleConfirmCard}
-            />
-          )
-        )}
-      </ScrollView>
+      {cards.length === 0 ? (
+        <View className="flex-1 items-center justify-center s">
+          <Text
+            style={{
+              fontFamily: "Roboto_400Regular",
+              fontSize: 20,
+              color: "#555555"
+            }}
+          >
+            No Workouts
+          </Text>
+        </View>
+      ) : (
+        <ScrollView
+          className="flex-1"
+          contentContainerStyle={{ alignItems: "center", paddingBottom: 120 }}
+          keyboardDismissMode="on-drag"
+        >
+          {cards.map(card =>
+            card.isConfirmed ? (
+              <ConfirmedCard
+                key={card.id}
+                cardData={card}
+                onRemove={handleRemoveCard}
+                onEdit={handleEditCard}
+              />
+            ) : (
+              <ExerciseCard
+                key={card.id}
+                initialData={card}
+                id={card.id}
+                onRemove={handleRemoveCard}
+                onConfirm={handleConfirmCard}
+              />
+            )
+          )}
+        </ScrollView>
+      )}
       <View className="absolute bottom-5 right-5">
         <Button
           variant="solid"

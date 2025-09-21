@@ -1,4 +1,4 @@
-import { CardType } from "@/app";
+import { CardInterface } from "@/app";
 import ExerciseDropDown from "@/components/ExerciseDropDown";
 import { Button, ButtonIcon } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,9 +7,9 @@ import { Input, InputField } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 
-type ExerciseCardProps = {
+interface ExerciseCardProps {
   id: number;
-  initialData?: CardType;
+  initialData?: CardInterface;
   onRemove: (id: number) => void;
   onConfirm: (
     id: number,
@@ -20,12 +20,12 @@ type ExerciseCardProps = {
       reps: string;
     }
   ) => void;
-};
+}
 
 const ExerciseCard = ({
   id,
-  onRemove,
   initialData,
+  onRemove,
   onConfirm
 }: ExerciseCardProps) => {
   const [exerciseName, setExerciseName] = useState(
@@ -62,10 +62,7 @@ const ExerciseCard = ({
       className="mt-5 h-2/5 w-11/12 flex-1 items-center rounded-lg"
     >
       <View className="m-3 w-full">
-        <ExerciseDropDown
-          onValueChange={setExerciseName}
-          value={exerciseName}
-        />
+        <ExerciseDropDown onValueChange={setExerciseName} name={exerciseName} />
         <View className="mt-5 flex-row justify-between">
           <View className="w-1/4">
             <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 14 }}>

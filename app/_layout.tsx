@@ -35,7 +35,11 @@ export default () => {
           name="index"
           options={{
             headerTitle: "Workout Log",
-            headerTitleStyle: { fontFamily: "Roboto_600SemiBold", fontSize: 18 }
+            headerTitleStyle: {
+              fontFamily: "Roboto_600SemiBold",
+              fontSize: 22,
+              color: "#555555"
+            }
           }}
         />
       </Stack>
