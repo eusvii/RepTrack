@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { CheckIcon, TrashIcon } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 
 interface ExerciseCardProps {
   id: number;
@@ -36,6 +36,7 @@ const ExerciseCard = ({
   );
   const [sets, setSets] = useState(initialData?.sets || "");
   const [reps, setReps] = useState(initialData?.reps || "");
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (initialData) {
@@ -47,6 +48,14 @@ const ExerciseCard = ({
   }, [initialData]);
 
   const confirmCard = () => {
+    if (!exerciseName || !startingWeight || !sets || !reps) {
+      setError(true);
+      missingDataAlert();
+      return;
+    }
+
+    setError(false);
+
     const data = {
       exerciseName: exerciseName,
       startingWeight: startingWeight,
@@ -54,6 +63,12 @@ const ExerciseCard = ({
       reps: reps
     };
     onConfirm(id, data);
+  };
+
+  const missingDataAlert = () => {
+    Alert.alert("Empty Fields", "Please fill out all fields.", [
+      { text: "Close", style: "default" }
+    ]);
   };
 
   return (
