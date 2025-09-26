@@ -29,7 +29,10 @@ interface ConfirmedCardProps {
 }
 
 const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
-  <Card variant="filled" className="mt-5 w-11/12 rounded-lg">
+  <Card
+    variant="filled"
+    className="mt-5 w-11/12 rounded-lg border border-[#ddd]"
+  >
     <View className="m-5">
       <View className="flex-row">
         <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
@@ -88,7 +91,7 @@ export default () => {
   const [cards, setCards] = useState<CardInterface[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const STORAGE_KEY = "@workout_cards";
+  const STORAGE_KEY = "@exercise_cards";
 
   useEffect(() => {
     const loadCards = async () => {
@@ -182,7 +185,7 @@ export default () => {
               color: "#555555"
             }}
           >
-            No Workouts
+            No Exercises
           </Text>
         </View>
       ) : (

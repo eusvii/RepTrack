@@ -74,7 +74,7 @@ const ExerciseCard = ({
   return (
     <Card
       variant="filled"
-      className="mt-5 h-2/5 w-11/12 flex-1 items-center rounded-lg"
+      className="mt-5 h-2/5 w-11/12 flex-1 items-center rounded-lg border border-[#ddd]"
     >
       <View className="m-3 w-full">
         <ExerciseDropDown onValueChange={setExerciseName} name={exerciseName} />
