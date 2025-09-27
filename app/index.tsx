@@ -1,15 +1,18 @@
 import ExerciseCard from "@/components/ExerciseCard";
 import { Button, ButtonIcon } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { AddIcon, EditIcon, TrashIcon } from "@/components/ui/icon";
+import { AddIcon } from "@/components/ui/icon";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
+  Modal,
   Platform,
+  Pressable,
   ScrollView,
   Text,
+  TouchableOpacity,
   View
 } from "react-native";
 
@@ -28,10 +31,10 @@ interface ConfirmedCardProps {
   onEdit: (id: number) => void;
 }
 
-const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
+const ConfirmedCard = ({ cardData }: ConfirmedCardProps) => (
   <Card
     variant="filled"
-    className="mt-5 w-11/12 rounded-lg border border-[#ddd]"
+    className="mt-5 w-11/12 rounded-2xl border border-[#ddd]"
   >
     <View className="m-5">
       <View className="flex-row">
@@ -68,28 +71,14 @@ const ConfirmedCard = ({ cardData, onRemove, onEdit }: ConfirmedCardProps) => (
         </Text>
       </View>
     </View>
-    <View className="my-3 flex-row justify-center">
-      <Button
-        onPress={() => onRemove(cardData.id)}
-        variant="solid"
-        className="mr-20 h-12 w-1/4 bg-[#555555]"
-      >
-        <ButtonIcon as={TrashIcon} className="h-7 w-7" />
-      </Button>
-      <Button
-        onPress={() => onEdit(cardData.id)}
-        variant="solid"
-        className="h-12 w-1/4 bg-[#555555]"
-      >
-        <ButtonIcon as={EditIcon} className="h-7 w-7" />
-      </Button>
-    </View>
   </Card>
 );
 
 export default () => {
   const [cards, setCards] = useState<CardInterface[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
 
   const STORAGE_KEY = "@exercise_cards";
 
@@ -102,14 +91,12 @@ export default () => {
         } else {
           setCards([{ id: 1, isConfirmed: false }]);
         }
-      } catch (e) {
-        console.error("Failed to load cards.", e);
+      } catch {
         setCards([{ id: 1, isConfirmed: false }]);
       } finally {
         setIsLoading(false);
       }
     };
-
     loadCards();
   }, []);
 
@@ -119,12 +106,9 @@ export default () => {
         try {
           const jsonValue = JSON.stringify(cards);
           await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
-        } catch (e) {
-          console.error("Failed to save cards.", e);
-        }
+        } catch {}
       }
     };
-
     saveCards();
   }, [cards, isLoading]);
 
@@ -164,6 +148,7 @@ export default () => {
         card.id === idToEdit ? { ...card, isConfirmed: false } : card
       )
     );
+    setModalVisible(false);
   };
 
   if (isLoading) {
@@ -177,7 +162,7 @@ export default () => {
   return (
     <View className="flex-1 bg-white">
       {cards.length === 0 ? (
-        <View className="s flex-1 items-center justify-center">
+        <View className="flex-1 items-center justify-center">
           <Text
             style={{
               fontFamily: "Roboto_400Regular",
@@ -200,12 +185,20 @@ export default () => {
           >
             {cards.map(card =>
               card.isConfirmed ? (
-                <ConfirmedCard
+                <Pressable
                   key={card.id}
-                  cardData={card}
-                  onRemove={handleRemoveCard}
-                  onEdit={handleEditCard}
-                />
+                  onLongPress={() => {
+                    setSelectedCardId(card.id);
+                    setModalVisible(true);
+                  }}
+                  className="w-full items-center"
+                >
+                  <ConfirmedCard
+                    cardData={card}
+                    onRemove={handleRemoveCard}
+                    onEdit={handleEditCard}
+                  />
+                </Pressable>
               ) : (
                 <ExerciseCard
                   key={card.id}
@@ -219,6 +212,62 @@ export default () => {
           </ScrollView>
         </KeyboardAvoidingView>
       )}
+
+      <Modal
+        visible={modalVisible}
+        transparent
+        animationType="none"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <Pressable
+          className="flex-1 items-center justify-center bg-black/30"
+          onPressOut={() => setModalVisible(false)}
+        >
+          <View
+            className="absolute z-10 h-40 w-44 rounded-2xl bg-white p-4 shadow-md"
+            onStartShouldSetResponder={() => true}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                if (selectedCardId !== null) {
+                  handleEditCard(selectedCardId);
+                }
+              }}
+              className="ml-3 mt-5 h-10"
+            >
+              <Text
+                style={{
+                  fontFamily: "Roboto_600SemiBold",
+                  fontSize: 18,
+                  color: "#555555"
+                }}
+              >
+                Edit
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                if (selectedCardId !== null) {
+                  handleRemoveCard(selectedCardId);
+                  setModalVisible(false);
+                }
+              }}
+              className="ml-3 mt-5 h-10"
+            >
+              <Text
+                style={{
+                  fontFamily: "Roboto_600SemiBold",
+                  fontSize: 18,
+                  color: "red"
+                }}
+              >
+                Delete
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Pressable>
+      </Modal>
+
       <View className="absolute bottom-5 right-5">
         <Button
           variant="solid"
