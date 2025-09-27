@@ -9,14 +9,21 @@ import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import "./global.css";
 
-SplashScreen.preventAutoHideAsync();
-
 export default () => {
   const [fontsLoaded, fontError] = useFonts({
     Roboto_400Regular,
     Roboto_600SemiBold,
     Roboto_700Bold
   });
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await SplashScreen.preventAutoHideAsync();
+      } catch (e) {}
+    }
+    prepare();
+  }, []);
 
   useEffect(() => {
     if (fontsLoaded || fontError) {
