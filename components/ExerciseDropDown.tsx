@@ -99,6 +99,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    width: "97%"
+    width: "96%"
   }
 });

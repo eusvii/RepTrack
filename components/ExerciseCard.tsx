@@ -1,8 +1,7 @@
 import { CardInterface } from "@/app";
 import ExerciseDropDown from "@/components/ExerciseDropDown";
-import { Button, ButtonIcon } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckIcon, TrashIcon } from "@/components/ui/icon";
 import { Input, InputField } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Alert, Text, View } from "react-native";
@@ -74,13 +73,19 @@ const ExerciseCard = ({
   return (
     <Card
       variant="filled"
-      className="mt-5 h-2/5 w-11/12 flex-1 items-center rounded-lg border border-[#ddd]"
+      className="mt-5 h-2/5 w-11/12 flex-1 items-center rounded-2xl border border-[#ddd]"
     >
-      <View className="m-3 w-full">
+      <View className="m-5 w-11/12">
         <ExerciseDropDown onValueChange={setExerciseName} name={exerciseName} />
         <View className="mt-5 flex-row justify-between">
           <View className="w-1/4">
-            <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 14 }}>
+            <Text
+              style={{
+                fontFamily: "Roboto_600SemiBold",
+                fontSize: 14,
+                color: "#555555"
+              }}
+            >
               Starting Weight (kg)
             </Text>
             <Input
@@ -95,12 +100,19 @@ const ExerciseCard = ({
                 placeholder="0"
                 onChangeText={text => setStartingWeight(text)}
                 value={startingWeight}
-                inputMode="numeric"
+                inputMode="decimal"
+                maxLength={6}
               />
             </Input>
           </View>
           <View className="w-1/4">
-            <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 14 }}>
+            <Text
+              style={{
+                fontFamily: "Roboto_600SemiBold",
+                fontSize: 14,
+                color: "#555555"
+              }}
+            >
               Working Sets
             </Text>
             <Input
@@ -116,11 +128,18 @@ const ExerciseCard = ({
                 onChangeText={text => setSets(text)}
                 value={sets}
                 inputMode="numeric"
+                maxLength={2}
               />
             </Input>
           </View>
           <View className="w-1/4">
-            <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 14 }}>
+            <Text
+              style={{
+                fontFamily: "Roboto_600SemiBold",
+                fontSize: 14,
+                color: "#555555"
+              }}
+            >
               Reps
             </Text>
             <Input
@@ -136,26 +155,45 @@ const ExerciseCard = ({
                 onChangeText={text => setReps(text)}
                 value={reps}
                 inputMode="numeric"
+                maxLength={2}
               />
             </Input>
           </View>
         </View>
-        <View className="my-10 flex-row justify-center">
+        <View>
           <Button
             variant="solid"
             action="primary"
-            className="mr-20 h-12 w-1/4 bg-[#555555]"
-            onPress={() => onRemove(id)}
-          >
-            <ButtonIcon as={TrashIcon} className="h-7 w-7" />
-          </Button>
-          <Button
-            variant="solid"
-            action="primary"
-            className="h-12 w-1/4 bg-[#555555]"
+            className="mt-10 h-12 w-full rounded-lg bg-[#555555]"
             onPress={confirmCard}
           >
-            <ButtonIcon as={CheckIcon} className="h-8 w-8" />
+            <Text
+              style={{
+                fontFamily: "Roboto_600SemiBold",
+                fontSize: 16,
+                color: "white"
+              }}
+            >
+              Confirm
+            </Text>
+          </Button>
+        </View>
+        <View>
+          <Button
+            variant="solid"
+            action="primary"
+            className="mt-5 h-12 w-full rounded-lg bg-red-600"
+            onPress={() => onRemove(id)}
+          >
+            <Text
+              style={{
+                fontFamily: "Roboto_600SemiBold",
+                fontSize: 16,
+                color: "white"
+              }}
+            >
+              Delete
+            </Text>
           </Button>
         </View>
       </View>
