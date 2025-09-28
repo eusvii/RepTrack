@@ -34,7 +34,7 @@ interface ConfirmedCardProps {
 const ConfirmedCard = ({ cardData }: ConfirmedCardProps) => (
   <Card
     variant="filled"
-    className="mt-5 w-11/12 rounded-2xl border border-[#ddd]"
+    className="mt-5 w-11/12 rounded-3xl border border-[#ddd]"
   >
     <View className="m-5">
       <View className="flex-row">
@@ -224,7 +224,7 @@ export default () => {
           onPressOut={() => setModalVisible(false)}
         >
           <View
-            className="absolute z-10 h-40 w-44 rounded-2xl bg-white p-4 shadow-md"
+            className="absolute z-10 h-40 w-64 rounded-2xl bg-white p-3"
             onStartShouldSetResponder={() => true}
           >
             <TouchableOpacity
@@ -233,14 +233,14 @@ export default () => {
                   handleEditCard(selectedCardId);
                 }
               }}
-              className="ml-3 mt-5 h-10"
             >
               <Text
                 style={{
                   fontFamily: "Roboto_600SemiBold",
-                  fontSize: 18,
+                  fontSize: 20,
                   color: "#555555"
                 }}
+                className="m-5"
               >
                 Edit
               </Text>
@@ -252,14 +252,14 @@ export default () => {
                   setModalVisible(false);
                 }
               }}
-              className="ml-3 mt-5 h-10"
             >
               <Text
                 style={{
                   fontFamily: "Roboto_600SemiBold",
-                  fontSize: 18,
+                  fontSize: 20,
                   color: "red"
                 }}
+                className="m-5"
               >
                 Delete
               </Text>
