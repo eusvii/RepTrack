@@ -42,14 +42,10 @@ const ExerciseDropDown = ({ onValueChange, name }: ExerciseDropDownProps) => {
 
   return (
     <Dropdown
-      style={[
-        styles.dropdown,
-        isFocus && { borderColor: "#555555", borderWidth: 2 }
-      ]}
+      style={[styles.dropdown, isFocus && { borderWidth: 2 }]}
       placeholderStyle={styles.placeholderStyle}
       selectedTextStyle={styles.selectedTextStyle}
       inputSearchStyle={styles.inputSearchStyle}
-      iconStyle={styles.iconStyle}
       data={sortedData}
       search={true}
       dropdownPosition="bottom"
@@ -80,15 +76,10 @@ export default ExerciseDropDown;
 const styles = StyleSheet.create({
   dropdown: {
     height: 50,
-    borderColor: "#ddd",
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 8,
     width: "100%"
-  },
-  iconStyle: {
-    width: 20,
-    height: 20
   },
   placeholderStyle: {
     fontSize: 16
@@ -97,7 +88,6 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   inputSearchStyle: {
-    height: 40,
     fontSize: 16,
     width: "96%"
   }

@@ -32,44 +32,39 @@ interface ConfirmedCardProps {
 }
 
 const ConfirmedCard = ({ cardData }: ConfirmedCardProps) => (
-  <Card
-    variant="filled"
-    className="mt-5 w-11/12 rounded-3xl border border-[#ddd]"
-  >
-    <View className="m-5">
-      <View className="flex-row">
-        <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
-          Exercise:{" "}
-        </Text>
-        <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
-          {cardData.exerciseName}
-        </Text>
-      </View>
-      <View className="mt-1 flex-row">
-        <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
-          Starting Weight:{" "}
-        </Text>
-        <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
-          {cardData.startingWeight}
-          {"kg"}
-        </Text>
-      </View>
-      <View className="mt-1 flex-row">
-        <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
-          Sets:{" "}
-        </Text>
-        <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
-          {cardData.sets}
-        </Text>
-      </View>
-      <View className="mt-1 flex-row">
-        <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
-          Reps:{" "}
-        </Text>
-        <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
-          {cardData.reps}
-        </Text>
-      </View>
+  <Card className="mt-5 w-11/12 rounded-3xl border p-8">
+    <View className="flex-row">
+      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
+        Exercise:{" "}
+      </Text>
+      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
+        {cardData.exerciseName}
+      </Text>
+    </View>
+    <View className="mt-1 flex-row">
+      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
+        Starting Weight:{" "}
+      </Text>
+      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
+        {cardData.startingWeight}
+        {"kg"}
+      </Text>
+    </View>
+    <View className="mt-1 flex-row">
+      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
+        Sets:{" "}
+      </Text>
+      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
+        {cardData.sets}
+      </Text>
+    </View>
+    <View className="mt-1 flex-row">
+      <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
+        Reps:{" "}
+      </Text>
+      <Text style={{ fontFamily: "Roboto_400Regular", fontSize: 18 }}>
+        {cardData.reps}
+      </Text>
     </View>
   </Card>
 );
@@ -154,7 +149,7 @@ export default () => {
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center bg-white">
-        <ActivityIndicator size="large" color="#555555" />
+        <ActivityIndicator size="large" color="#555" />
       </View>
     );
   }
@@ -167,7 +162,7 @@ export default () => {
             style={{
               fontFamily: "Roboto_400Regular",
               fontSize: 20,
-              color: "#555555"
+              color: "#555"
             }}
           >
             No Exercises
@@ -180,8 +175,9 @@ export default () => {
           keyboardVerticalOffset={100}
         >
           <ScrollView
-            contentContainerStyle={{ alignItems: "center", paddingBottom: 120 }}
+            contentContainerStyle={{ alignItems: "center", paddingBottom: 150 }}
             keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
           >
             {cards.map(card =>
               card.isConfirmed ? (
@@ -216,7 +212,7 @@ export default () => {
       <Modal
         visible={modalVisible}
         transparent
-        animationType="none"
+        animationType="fade"
         onRequestClose={() => setModalVisible(false)}
       >
         <Pressable
@@ -224,7 +220,7 @@ export default () => {
           onPressOut={() => setModalVisible(false)}
         >
           <View
-            className="absolute z-10 h-40 w-64 rounded-2xl bg-white p-3"
+            className="absolute z-10 w-1/3 rounded-2xl bg-white p-3"
             onStartShouldSetResponder={() => true}
           >
             <TouchableOpacity
@@ -238,9 +234,9 @@ export default () => {
                 style={{
                   fontFamily: "Roboto_600SemiBold",
                   fontSize: 20,
-                  color: "#555555"
+                  color: "#555"
                 }}
-                className="m-5"
+                className="m-5 mb-8"
               >
                 Edit
               </Text>
@@ -259,7 +255,7 @@ export default () => {
                   fontSize: 20,
                   color: "red"
                 }}
-                className="m-5"
+                className="mb-5 ml-5"
               >
                 Delete
               </Text>
