@@ -5,9 +5,12 @@ import {
   Roboto_700Bold,
   useFonts
 } from "@expo-google-fonts/roboto";
-import { SplashScreen, Stack } from "expo-router";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "./global.css";
+
+SplashScreen.preventAutoHideAsync();
 
 export default () => {
   const [fontsLoaded, fontError] = useFonts({
@@ -18,7 +21,7 @@ export default () => {
 
   useEffect(() => {
     if (fontsLoaded || fontError) {
-      SplashScreen.hideAsync();
+      SplashScreen.hide();
     }
   }, [fontsLoaded, fontError]);
 
