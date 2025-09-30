@@ -3,7 +3,7 @@ import { Button, ButtonIcon } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AddIcon } from "@/components/ui/icon";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -32,7 +32,7 @@ interface ConfirmedCardProps {
 }
 
 const ConfirmedCard = ({ cardData }: ConfirmedCardProps) => (
-  <Card className="mt-5 w-11/12 rounded-3xl border p-8">
+  <Card variant="filled" className="mt-5 w-11/12 rounded-3xl border p-8">
     <View className="flex-row">
       <Text style={{ fontFamily: "Roboto_600SemiBold", fontSize: 18 }}>
         Exercise:{" "}
@@ -74,6 +74,12 @@ export default () => {
   const [isLoading, setIsLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+  const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0
+  });
+
+  const cardRefs = useRef<Record<number, View | null>>({});
 
   const STORAGE_KEY = "@exercise_cards";
 
@@ -183,9 +189,21 @@ export default () => {
               card.isConfirmed ? (
                 <Pressable
                   key={card.id}
+                  ref={ref => {
+                    if (ref) cardRefs.current[card.id] = ref;
+                  }}
                   onLongPress={() => {
-                    setSelectedCardId(card.id);
-                    setModalVisible(true);
+                    const ref = cardRefs.current[card.id];
+                    if (ref) {
+                      ref.measureInWindow((x, y, width, height) => {
+                        setMenuPosition({
+                          x: x + width,
+                          y: y + height
+                        });
+                        setSelectedCardId(card.id);
+                        setModalVisible(true);
+                      });
+                    }
                   }}
                   className="w-full items-center"
                 >
@@ -216,11 +234,24 @@ export default () => {
         onRequestClose={() => setModalVisible(false)}
       >
         <Pressable
-          className="flex-1 items-center justify-center bg-black/30"
+          className="flex-1 bg-black/30"
           onPressOut={() => setModalVisible(false)}
         >
           <View
-            className="absolute z-10 w-1/3 rounded-2xl bg-white p-3"
+            style={{
+              position: "absolute",
+              top: menuPosition.y,
+              left: menuPosition.x,
+              transform: [{ translateX: -200 }, { translateY: -80 }],
+              width: 160,
+              backgroundColor: "white",
+              borderRadius: 16,
+              padding: 8,
+              elevation: 5,
+              shadowColor: "#000",
+              shadowOpacity: 0.2,
+              shadowRadius: 5
+            }}
             onStartShouldSetResponder={() => true}
           >
             <TouchableOpacity
