@@ -35,7 +35,6 @@ const ExerciseCard = ({
   );
   const [sets, setSets] = useState(initialData?.sets || "");
   const [reps, setReps] = useState(initialData?.reps || "");
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (initialData) {
@@ -47,13 +46,24 @@ const ExerciseCard = ({
   }, [initialData]);
 
   const confirmCard = () => {
-    if (!exerciseName || !startingWeight || !sets || !reps) {
-      setError(true);
-      missingDataAlert();
+    if (
+      isNaN(Number(startingWeight)) ||
+      isNaN(Number(sets)) ||
+      isNaN(Number(reps))
+    ) {
+      notANumberAlert();
       return;
     }
 
-    setError(false);
+    if (!exerciseName || !startingWeight || !sets || !reps) {
+      incompleteCardAlert();
+      return;
+    }
+
+    if (sets === "0" || reps === "0") {
+      invalidInputAlert();
+      return;
+    }
 
     const data = {
       exerciseName: exerciseName,
@@ -64,9 +74,21 @@ const ExerciseCard = ({
     onConfirm(id, data);
   };
 
-  const missingDataAlert = () => {
-    Alert.alert("Empty Fields", "Please fill out all fields.", [
-      { text: "Close", style: "default" }
+  const notANumberAlert = () => {
+    Alert.alert("Invalid Format", "Please enter numeric values only.", [
+      { text: "OK", style: "default" }
+    ]);
+  };
+
+  const incompleteCardAlert = () => {
+    Alert.alert("Incomplete Data", "All fields must be completed.", [
+      { text: "OK", style: "default" }
+    ]);
+  };
+
+  const invalidInputAlert = () => {
+    Alert.alert("Invalid Entry", "Sets and reps must be greater than zero.", [
+      { text: "OK", style: "default" }
     ]);
   };
 
@@ -110,7 +132,7 @@ const ExerciseCard = ({
                 fontSize: 14
               }}
             >
-              Working Sets
+              Sets
             </Text>
             <Input
               variant="outline"
