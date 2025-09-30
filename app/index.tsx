@@ -1,11 +1,12 @@
 import ExerciseCard from "@/components/ExerciseCard";
 import { Button, ButtonIcon } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { AddIcon } from "@/components/ui/icon";
+import { AddIcon, TrashIcon } from "@/components/ui/icon";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -152,6 +153,21 @@ export default () => {
     setModalVisible(false);
   };
 
+  const handleRemoveAllCards = () => {
+    Alert.alert(
+      "Remove All Exercises",
+      "Are you sure you want to delete all exercise cards?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => setCards([])
+        }
+      ]
+    );
+  };
+
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center bg-white">
@@ -295,11 +311,27 @@ export default () => {
         </Pressable>
       </Modal>
 
+      {cards.length > 1 ? (
+        <View className="absolute bottom-32 right-5">
+          <Button
+            variant="solid"
+            className="mb-10 h-20 w-20 rounded-full bg-red-600"
+            onPress={() => {
+              handleRemoveAllCards();
+            }}
+          >
+            <ButtonIcon as={TrashIcon} className="h-9 w-9" />
+          </Button>
+        </View>
+      ) : null}
+
       <View className="absolute bottom-5 right-5">
         <Button
           variant="solid"
           className="mb-10 h-20 w-20 rounded-full bg-[#555555]"
-          onPress={handleAddCard}
+          onPress={() => {
+            handleAddCard();
+          }}
         >
           <ButtonIcon as={AddIcon} className="h-10 w-10" />
         </Button>
