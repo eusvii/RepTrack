@@ -25,3 +25,8 @@
 <p>The app uses state management to handle user input and updates along with AsyncStorage to persist data locally between sessions. </p>
 
 ## Examples
+<p float="left">
+  <img src="/examples/RepTrack_Example1.PNG" width="33%" />
+  <img src="/examples/RepTrack_Example2.PNG" width="33%" />
+  <img src="/examples/RepTrack_Example3.PNG" width="33%" />
+</p
