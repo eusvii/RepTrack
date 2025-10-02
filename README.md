@@ -24,15 +24,15 @@
 
 <p>The app uses state management to handle user input and updates along with AsyncStorage to persist data locally between sessions. </p>
 
-## Examples
-<a href="/examples/RepTrack_Example_Video.mp4">
-    <button>Example Video</button>
-</a>
-<p></p>
+## 🖼️ Examples
+<p>Example Video:</p>
 
-### 🖼️ Images
+
+https://github.com/user-attachments/assets/5a387f5f-4f57-4d65-b283-22226dcd6b04
+
+
+<p></p>
 <p float="left">
   <img src="/examples/RepTrack_Example1.PNG" width="33%" />
   <img src="/examples/RepTrack_Example2.PNG" width="33%" />
 </p>
-
