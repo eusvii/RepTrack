@@ -1,0 +1,94 @@
+import { useMemo, useState } from "react";
+import { StyleSheet } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
+import exercisesData from "../data/exercises.json";
+
+const ITEM_HEIGHT = 50;
+
+interface DropdownItem {
+  label: string;
+  value: number;
+}
+
+interface ExerciseDropDownProps {
+  onValueChange: (value: string) => void;
+  name?: string | null;
+}
+
+const ExerciseDropDown = ({ onValueChange, name }: ExerciseDropDownProps) => {
+  const [isFocus, setIsFocus] = useState(false);
+
+  const getItemLayout = (
+    data: ArrayLike<DropdownItem> | null | undefined,
+    index: number
+  ) => ({
+    length: ITEM_HEIGHT,
+    offset: ITEM_HEIGHT * index,
+    index
+  });
+
+  const sortedData = useMemo(() => {
+    const formattedData = exercisesData.exercises.map(exercise => ({
+      label: exercise.name,
+      value: exercise.id
+    }));
+
+    return formattedData.sort((a, b) => a.label.localeCompare(b.label));
+  }, []);
+
+  const selectedItem = useMemo(() => {
+    return sortedData.find(item => item.label === name);
+  }, [name, sortedData]);
+
+  return (
+    <Dropdown
+      style={[styles.dropdown, isFocus && { borderWidth: 2 }]}
+      placeholderStyle={styles.placeholderStyle}
+      selectedTextStyle={styles.selectedTextStyle}
+      inputSearchStyle={styles.inputSearchStyle}
+      data={sortedData}
+      search={true}
+      dropdownPosition="bottom"
+      maxHeight={300}
+      labelField="label"
+      valueField="value"
+      placeholder="Select exercise"
+      searchPlaceholder="Search exercise..."
+      fontFamily="Roboto_400Regular"
+      value={selectedItem?.value}
+      onFocus={() => setIsFocus(true)}
+      onBlur={() => setIsFocus(false)}
+      onChange={exercise => {
+        setIsFocus(false);
+        onValueChange(exercise.label);
+      }}
+      autoScroll={false}
+      flatListProps={{
+        getItemLayout: getItemLayout,
+        initialNumToRender: 15
+      }}
+    />
+  );
+};
+
+export default ExerciseDropDown;
+
+const styles = StyleSheet.create({
+  dropdown: {
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    width: "100%"
+  },
+  placeholderStyle: {
+    fontSize: 16
+  },
+  selectedTextStyle: {
+    fontSize: 16
+  },
+  inputSearchStyle: {
+    fontSize: 16,
+    width: "96%"
+  }
+});

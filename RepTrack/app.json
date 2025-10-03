@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "scheme": "reptrack",
+    "name": "RepTrack",
+    "slug": "RepTrack",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.eusvii.WorkoutLog",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.eusvii.WorkoutLog"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": ["expo-router", "expo-font", "expo-splash-screen"],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9e344c29-4dc2-4dc2-b162-9e48a8eea6ce"
+      }
+    },
+    "owner": "eusvii"
+  }
+}
