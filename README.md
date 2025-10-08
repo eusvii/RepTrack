@@ -24,8 +24,7 @@
 
 <p>The app uses state management to handle user input and updates along with AsyncStorage to persist data locally between sessions. </p>
 
-## 🖼️ Examples
-<p>Example Video:</p>
+## 🖼️ Example Video
 
 
 https://github.com/user-attachments/assets/5a387f5f-4f57-4d65-b283-22226dcd6b04
