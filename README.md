@@ -31,8 +31,4 @@
 https://github.com/user-attachments/assets/5a387f5f-4f57-4d65-b283-22226dcd6b04
 
 
-<p></p>
-<p float="left">
-  <img src="/examples/RepTrack_Example1.PNG" width="33%" />
-  <img src="/examples/RepTrack_Example2.PNG" width="33%" />
-</p>
+
