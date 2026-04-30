@@ -1,6 +1,4 @@
 # 📱RepTrack
-<p><em>A mobile application for exercise logging  built with Expo.</em></p>
-
 | Layer | 📚 Technology Stack |
 | ----- | -------------------- |
 | Front-End | Expo |
