@@ -1,5 +1,5 @@
-# RepTrack
-| Layer | Technology Stack |
+# 📱 RepTrack
+| Layer | 📚 Technology Stack |
 | ----- | -------------------- |
 | Front-End | Expo |
 | Components | Gluestack UI |
